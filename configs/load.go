@@ -2,7 +2,7 @@ package configs
 
 import (
 	"gopkg.in/yaml.v3"
-	"implementasi-minio-gcs-golang/helpers"
+	"implementation-minio-gcs-golang/helpers"
 	"log"
 	"os"
 	"path/filepath"

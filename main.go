@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
-	"implementasi-minio-gcs-golang/configs"
-	"implementasi-minio-gcs-golang/middleware"
-	"implementasi-minio-gcs-golang/usecase"
+	"implementation-minio-gcs-golang/configs"
+	"implementation-minio-gcs-golang/middleware"
+	"implementation-minio-gcs-golang/usecase"
 	"log"
 )
 
@@ -14,10 +14,11 @@ func main() {
 		username = "username"
 		password = "password"
 
-		// Inisialisasi file upload
-		bucketName = "chum-bucket"
-		fileName   = "notes.txt"
-		filePath   = "external/files/"
+		// Inisialisasi file upload dan download
+		bucketName          = "chum-bucket"
+		fileName            = "notes.txt"
+		filePath            = "external/files/"
+		destinationFilePath = "external/destinations/"
 	)
 
 	// Membaca file JSON yang berisi konfigurasi
@@ -34,12 +35,23 @@ func main() {
 
 	// Buat instance untuk upload service
 	uploadService := usecase.NewUploadService(config)
-	result, err := uploadService.UploadFile(filePath, bucketName, fileName)
+	resultUpload, err := uploadService.UploadFile(fileName, bucketName, filePath)
 	if err != nil {
-		log.Fatalf("failed to upload file: %s", err)
+		log.Fatalf("gagal upload file: %s", err)
+	}
+
+	// Buat instance untuk get service
+	getService := usecase.NewGetService(config)
+	resultRetrieve, err := getService.GetFile(fileName, bucketName, destinationFilePath)
+	if err != nil {
+		log.Fatalf("gagal mendapatkan file: %s", err)
 	}
 
 	fmt.Println("File successfully uploaded.")
-	fmt.Println("ETag:", result.Etag)
-	fmt.Println("Public URL:", result.PublicURL)
+	fmt.Println("ETag:", resultUpload.Etag)
+	fmt.Println("Public URL:", resultUpload.PublicURL)
+
+	fmt.Println("============================")
+	fmt.Println("File successfully retrieve.")
+	fmt.Println("Data:", resultRetrieve)
 }

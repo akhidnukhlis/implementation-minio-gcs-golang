@@ -1,4 +1,4 @@
-module implementasi-minio-gcs-golang
+module implementation-minio-gcs-golang
 
 go 1.20
 
