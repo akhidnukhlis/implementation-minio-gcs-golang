@@ -1,0 +1,14 @@
+####################
+# GCS CONFIG
+####################
+GCS_ENABLED: true
+GCS_CREDENTIALS_FILE: gcs-credential.json
+
+####################
+# MINIO CONFIG
+####################
+MINIO_ENABLED: false
+MINIO_ENDPOINT: 198.19.208.2:9000
+MINIO_ACCESS_KEY: root
+MINIO_SECRET_ACCESS_KEY: password
+MINIO_SSL: false
