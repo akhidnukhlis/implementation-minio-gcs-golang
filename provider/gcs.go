@@ -3,9 +3,10 @@ package provider
 import (
 	"cloud.google.com/go/storage"
 	"context"
+	"fmt"
 	"google.golang.org/api/option"
-	entity "implementasi-minio-gcs-golang/entities"
-	"implementasi-minio-gcs-golang/helpers"
+	entity "implementation-minio-gcs-golang/entities"
+	"implementation-minio-gcs-golang/helpers"
 	"io"
 	"os"
 	"path/filepath"
@@ -36,7 +37,7 @@ func NewGCSAuthService(projectID, credentialFileName string) (*GCSAuthService, e
 }
 
 // UploadFile mengupload file ke Google Cloud Storage (GCS)
-func (g *GCSAuthService) UploadFile(filePath, bucketName, fileName string) (*entity.UploadResult, error) {
+func (g *GCSAuthService) UploadFile(fileName, bucketName, filePath string) (*entity.UploadResult, error) {
 	ctx := context.TODO()
 	bucket := g.client.Bucket(bucketName)
 	object := bucket.Object(fileName)
@@ -62,4 +63,26 @@ func (g *GCSAuthService) UploadFile(filePath, bucketName, fileName string) (*ent
 		Etag:      attrs.Etag,
 		PublicURL: attrs.MediaLink,
 	}, nil
+}
+
+// GCSAuthService mengambil file dari GCS storage
+func (g *GCSAuthService) GetFile(fileName, bucketName, filePath string) error {
+	ctx := context.TODO()
+	file, err := os.Create(filePath)
+	if err != nil {
+		return fmt.Errorf("gagal membuat folder penyimpanan: %w", err)
+	}
+	defer file.Close()
+
+	reader, err := g.client.Bucket(bucketName).Object(fileName).NewReader(ctx)
+	if err != nil {
+		return fmt.Errorf("gagal mengambil file dari GCS: %w", err)
+	}
+	defer reader.Close()
+
+	if _, err := io.Copy(file, reader); err != nil {
+		return fmt.Errorf("gagal memuat konten file: %w", err)
+	}
+
+	return nil
 }

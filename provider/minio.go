@@ -4,7 +4,7 @@ import (
 	"context"
 	"github.com/minio/minio-go/v7"
 	"github.com/minio/minio-go/v7/pkg/credentials"
-	entity "implementasi-minio-gcs-golang/entities"
+	entity "implementation-minio-gcs-golang/entities"
 	"os"
 	"path/filepath"
 )
@@ -38,7 +38,7 @@ func NewMinIOAuthService(endpoint, accessKey, secretKey string, ssl bool) (*MinI
 }
 
 // UploadFile mengupload file ke MinIO storage
-func (m *MinIOAuthService) UploadFile(filePath, bucketName, fileName string) (*entity.UploadResult, error) {
+func (m *MinIOAuthService) UploadFile(fileName, bucketName, filePath string) (*entity.UploadResult, error) {
 	// Membuat cintext context
 	ctx := context.TODO()
 
@@ -69,4 +69,17 @@ func (m *MinIOAuthService) UploadFile(filePath, bucketName, fileName string) (*e
 		Etag:      etag.ETag,
 		PublicURL: etag.Location,
 	}, nil
+}
+
+// GetFile mengambil file dari MinIO storage
+func (m *MinIOAuthService) GetFile(fileName, bucketName, destinationFile string) error {
+	// Membuat cintext context
+	ctx := context.TODO()
+
+	err := m.minioClient.FGetObject(ctx, bucketName, fileName, destinationFile, minio.GetObjectOptions{})
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

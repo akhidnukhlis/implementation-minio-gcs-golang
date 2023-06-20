@@ -2,9 +2,9 @@ package usecase
 
 import (
 	"errors"
-	configs "implementasi-minio-gcs-golang/configs"
-	entity "implementasi-minio-gcs-golang/entities"
-	"implementasi-minio-gcs-golang/provider"
+	configs "implementation-minio-gcs-golang/configs"
+	entity "implementation-minio-gcs-golang/entities"
+	"implementation-minio-gcs-golang/provider"
 	"log"
 )
 
@@ -20,7 +20,7 @@ func NewUploadService(config *configs.Config) *UploadService {
 }
 
 // UploadFile upload file menggunakan penyedia penyimpanan yang ditentukan
-func (u *UploadService) UploadFile(filePath string, bucketName string, fileName string) (*entity.UploadResult, error) {
+func (u *UploadService) UploadFile(fileName, bucketName, filePath string) (*entity.UploadResult, error) {
 	// Memeriksa layanan yang aktif berdasarkan kredensial
 	var uploadResult *entity.UploadResult
 
@@ -32,7 +32,7 @@ func (u *UploadService) UploadFile(filePath string, bucketName string, fileName 
 			log.Fatalf("gagal connect ke MinIO: %s", err)
 		}
 
-		result, err := minIOAuthService.UploadFile(filePath, bucketName, fileName)
+		result, err := minIOAuthService.UploadFile(fileName, bucketName, filePath)
 		if err != nil {
 			return nil, err
 		}
