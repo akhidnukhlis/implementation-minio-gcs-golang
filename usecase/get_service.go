@@ -26,17 +26,17 @@ func (g *GetService) GetFile(fileName, bucketName, filePath string) (*entity.Fil
 	// Memeriksa layanan yang aktif berdasarkan kredensial
 	var fileResult *entity.FileResult
 
+	// Buat folder penyimpanan jika tidak ditemukan
+	if err := os.MkdirAll(filePath, os.ModePerm); err != nil {
+		log.Fatalf("gagal membuat folder penyimpanan: %v", err)
+	}
+
 	switch {
 	case g.config.MinioEnabled:
 		// Inisialisasi layanan autentikasi MinIO
 		minIOAuthService, err := provider.NewMinIOAuthService(g.config.MinioEndpoint, g.config.MinioAccessKey, g.config.MinioSecretAccessKey, g.config.MinioSSL)
 		if err != nil {
 			log.Fatalf("gagal connect ke MinIO: %s", err)
-		}
-
-		// Buat folder penyimpanan jika tidak ditemukan
-		if err := os.MkdirAll(filePath, os.ModePerm); err != nil {
-			log.Fatalf("gagal membuat folder penyimpanan: %v", err)
 		}
 
 		destinationFile := filepath.Join(filePath, fileName)
