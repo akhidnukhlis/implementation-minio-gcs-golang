@@ -68,7 +68,7 @@ func (g *GCSAuthService) UploadFile(fileName, bucketName, filePath string) (*ent
 // GetFile mengambil file dari GCS storage
 func (g *GCSAuthService) GetFile(fileName, bucketName, filePath string) error {
 	ctx := context.TODO()
-	file, err := os.Create(filePath)
+	file, err := os.Create(filepath.Join(filePath, fileName))
 	if err != nil {
 		return fmt.Errorf("gagal membuat folder penyimpanan: %w", err)
 	}
