@@ -16,7 +16,7 @@ func main() {
 
 		// Inisialisasi file upload dan download
 		bucketName          = "chum-bucket"
-		fileName            = "notes.txt"
+		fileName            = "akhidnukhlis-notes.txt"
 		filePath            = "external/files/"
 		destinationFilePath = "external/destinations/"
 	)

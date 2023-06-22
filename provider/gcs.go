@@ -8,6 +8,7 @@ import (
 	entity "implementation-minio-gcs-golang/entities"
 	"implementation-minio-gcs-golang/helpers"
 	"io"
+	"log"
 	"os"
 	"path/filepath"
 )
@@ -43,6 +44,8 @@ func (g *GCSAuthService) UploadFile(fileName, bucketName, filePath string) (*ent
 	object := bucket.Object(fileName)
 	writer := object.NewWriter(ctx)
 	defer writer.Close()
+
+	log.Println("directory file:", filepath.Join(filePath, fileName))
 
 	file, err := os.Open(filepath.Join(filePath, fileName))
 	if err != nil {
