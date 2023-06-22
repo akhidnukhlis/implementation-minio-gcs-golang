@@ -50,8 +50,6 @@ func (m *MinIOAuthService) UploadFile(fileName, bucketName, filePath string) (*e
 	}
 	defer file.Close()
 
-	fmt.Println(file)
-
 	// Mengambil statistik file
 	stat, err := file.Stat()
 	if err != nil {
