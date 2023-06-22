@@ -45,7 +45,7 @@ func (u *UploadService) UploadFile(fileName, bucketName, filePath string) (*enti
 			log.Fatalf("gagal connect ke GCS: %s", err)
 		}
 
-		result, err := gcsAuthService.UploadFile(filePath, bucketName, fileName)
+		result, err := gcsAuthService.UploadFile(fileName, bucketName, filePath)
 		if err != nil {
 			return nil, err
 		}

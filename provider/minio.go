@@ -2,6 +2,7 @@ package provider
 
 import (
 	"context"
+	"fmt"
 	"github.com/minio/minio-go/v7"
 	"github.com/minio/minio-go/v7/pkg/credentials"
 	entity "implementation-minio-gcs-golang/entities"
@@ -48,6 +49,8 @@ func (m *MinIOAuthService) UploadFile(fileName, bucketName, filePath string) (*e
 		return nil, err
 	}
 	defer file.Close()
+
+	fmt.Println(file)
 
 	// Mengambil statistik file
 	stat, err := file.Stat()
